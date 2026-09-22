@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tabel Jadwal - Biru & Putih</title>
+</head>
+
+<body>
+
+  <div
+    style="padding:24px; font-family:Roboto;">
+    <div
+      style="max-width:1100px; margin:0 auto; background:#ffffff; border-radius:20px; box-shadow:0 10px 30px rgba(30,64,175,0.08); padding:28px;">
+
+      <div style="margin-bottom:20px;">
+        <h1 style="margin:0 0 6px 0; font-size:22px; font-weight:700; ">Jadwal Kunjungan Sekolah</h1>
+       
+      </div>
+
+      <div id="toolbar"
+        style="display:flex; flex-wrap:wrap; gap:12px; align-items:flex-end; justify-content:space-between; margin-bottom:18px;">
+        <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:flex-end;">
+          <div style="display:flex; flex-direction:column; gap:4px;">
+            <label for="searchInput"
+              style="font-size:11px; font-weight:600; color:#3b82f6; text-transform:uppercase; letter-spacing:0.03em;">Pencarian</label>
+            <input type="text" id="searchInput" placeholder="Cari sekolah, lokasi..."
+              style="border:1px solid #cbd5e1; border-radius:10px; padding:8px 12px; font-size:13px; color:#1e293b; outline:none; background:#f8fafc; min-width:220px;">
+          </div>
+          <div style="display:flex; flex-direction:column; gap:4px;">
+            <label for="startDate"
+              style="font-size:11px; font-weight:600; color:#3b82f6; text-transform:uppercase; letter-spacing:0.03em;">Dari
+              Tanggal</label>
+            <input type="date" id="startDate"
+              style="border:1px solid #cbd5e1; border-radius:10px; padding:8px 12px; font-size:13px; color:#1e293b; outline:none; background:#f8fafc;">
+          </div>
+          <div style="display:flex; flex-direction:column; gap:4px;">
+            <label for="endDate"
+              style="font-size:11px; font-weight:600; color:#3b82f6; text-transform:uppercase; letter-spacing:0.03em;">Sampai
+              Tanggal</label>
+            <input type="date" id="endDate"
+              style="border:1px solid #cbd5e1; border-radius:10px; padding:8px 12px; font-size:13px; color:#1e293b; outline:none; background:#f8fafc;">
+          </div>
+          <button id="resetBtn"
+            style="display:none; border:1px solid #93c5fd; background:#eff6ff; color:#1d4ed8; border-radius:10px; padding:8px 14px; font-size:13px; font-weight:600; cursor:pointer; height:36px;">Reset
+            Filter</button>
+        </div>
+
+        <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:flex-end;">
+          <div style="display:flex; flex-direction:column; gap:4px;">
+            <label for="pageSize"
+              style="font-size:11px; font-weight:600; color:#3b82f6; text-transform:uppercase; letter-spacing:0.03em;">Tampilkan</label>
+            <select id="pageSize"
+              style="border:1px solid #cbd5e1; border-radius:10px; padding:8px 12px; font-size:13px; color:#1e293b; outline:none; background:#f8fafc;">
+              <option value="5">5</option>
+              <option value="10" selected>10</option>
+              <option value="25">25</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div style="overflow-x:auto; border-radius:14px; border:1px solid #e2e8f0;">
+        <table style="width:100%; border-collapse:collapse; min-width:640px;">
+          <thead>
+            <tr>
+              <th data-sort="hari" data-label="Hari" title="Klik untuk urutkan"
+                style="background:#1e3a8a; color:#ffffff; font-size:12px; font-weight:600; text-align:left; padding:12px 16px; white-space:nowrap; cursor:pointer; user-select:none;">
+                <span>Hari</span><span data-ind style="display:inline-block; margin-left:6px; font-size:10px; opacity:0.35;">&#8597;</span></th>
+              <th data-sort="tanggal" data-label="Tanggal" title="Klik untuk urutkan"
+                style="background:#1e3a8a; color:#ffffff; font-size:12px; font-weight:600; text-align:left; padding:12px 16px; white-space:nowrap; cursor:pointer; user-select:none;">
+                <span>Tanggal</span><span data-ind style="display:inline-block; margin-left:6px; font-size:10px; opacity:0.35;">&#8597;</span></th>
+              <th data-sort="waktu" data-label="Waktu" title="Klik untuk urutkan"
+                style="background:#1e3a8a; color:#ffffff; font-size:12px; font-weight:600; text-align:left; padding:12px 16px; white-space:nowrap; cursor:pointer; user-select:none;">
+                <span>Waktu</span><span data-ind style="display:inline-block; margin-left:6px; font-size:10px; opacity:0.35;">&#8597;</span></th>
+              <th data-sort="sekolah" data-label="Sekolah" title="Klik untuk urutkan"
+                style="background:#1e3a8a; color:#ffffff; font-size:12px; font-weight:600; text-align:left; padding:12px 16px; white-space:nowrap; cursor:pointer; user-select:none;">
+                <span>Sekolah</span><span data-ind style="display:inline-block; margin-left:6px; font-size:10px; opacity:0.35;">&#8597;</span></th>
+              <th data-sort="lokasi" data-label="Lokasi" title="Klik untuk urutkan"
+                style="background:#1e3a8a; color:#ffffff; font-size:12px; font-weight:600; text-align:left; padding:12px 16px; white-space:nowrap; cursor:pointer; user-select:none;">
+                <span>Lokasi</span><span data-ind style="display:inline-block; margin-left:6px; font-size:10px; opacity:0.35;">&#8597;</span></th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <!-- diisi oleh JavaScript -->
+          </tbody>
+        </table>
+      </div>
+      <!-- Preview Google Maps: muncul saat hover pada link lokasi -->
+      <div id="mapPreview"
+        style="display:none; position:fixed; z-index:1000; background:#ffffff; border:1px solid #cbd5e1; border-radius:12px; box-shadow:0 10px 24px rgba(30,64,175,0.18); pointer-events:none; padding:0; overflow:hidden;">
+        <div id="mapPreviewLabel"
+          style="padding:6px 10px; font-size:11px; font-weight:700; color:#1e3a8a; background:#eff6ff; border-bottom:1px solid #dbeafe; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"></div>
+        <iframe id="mapPreviewFrame" width="380" height="260" title="Anteprima Google Maps"
+          style="border:0; display:block; pointer-events:none;"></iframe>
+      </div>
+
+
+      <div
+        style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px; margin-top:18px;">
+        <div id="paginationInfo" style="font-size:12.5px; color:#64748b;"></div>
+        <div id="paginationControls" style="display:flex; gap:6px; align-items:center;"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* =========================================================
+       DATA TABEL
+       Tambah / ubah data cukup di array ini.
+       Field:
+          hari    -> nama hari (ditampilkan sebagai teks tanpa badge)
+         tanggal -> format YYYY-MM-DD (dipakai untuk filter tanggal)
+         waktu   -> jam kegiatan, misal "08:00 - 10:00"
+         sekolah   -> nama sekolah
+         lokasi    -> teks alamat yang ditampilkan (akan jadi teks link)
+         koordinat -> (opsional) "lat,lng" titik presisi, mis. "-7.283456, 112.712345"
+                      Ambil dari Google Maps: klik kanan titik > klik angka koordinat > salin.
+                      Bila diisi, preview hover menunjuk titik ini (pin presisi).
+         mapsLink  -> (opsional) URL Google Maps tujuan. Jika dikosongkan / dihapus,
+                       link akan dibuat otomatis dari teks "lokasi" (pencarian Google Maps).
+                       Untuk titik lokasi yang presisi, isi mapsLink dengan link
+                       "Bagikan" dari Google Maps (klik kanan titik > Bagikan > Salin link).
+    ========================================================= */
+    const tableData = [
+      { hari: "Rabu", tanggal: "2026-09-23", waktu: "09:00 - 12:00", sekolah: "PKBM KHAIRUNNAS JENJANG SMA", lokasi: "Home Theater Rektorat", koordinat: "-7.300764702394049, 112.67302355158121", mapsLink: "https://maps.app.goo.gl/PCPvTUzEouZBZwgy7" },
+      { hari: "Kamis", tanggal: "2026-09-24", waktu: "09:00 - 12:00", sekolah: "Sekolah Rakyat Menengah Atas 36 Bojonegoro", lokasi: "Home Theater Rektorat", koordinat: "-7.300764702394049, 112.67302355158121", mapsLink: "https://maps.app.goo.gl/PCPvTUzEouZBZwgy7" },
+      { hari: "Senin", tanggal: "2026-09-28", waktu: "09:00 - 12:00", sekolah: "SMA PROGRESIF BUMI SHALAWAT SIDOARJO", lokasi: "Home Theater Rektorat", koordinat: "-7.300764702394049, 112.67302355158121", mapsLink: "https://maps.app.goo.gl/PCPvTUzEouZBZwgy7" },
+      { hari: "Rabu", tanggal: "2026-09-30", waktu: "09:00 - 12:00", sekolah: "SMA ISLAM AL AZHAR 22 CIKARANG", lokasi: "Auditorium Lantai 7 Fakultas Psikologi Unesa", koordinat: "-7.299626355881068, 112.67028252889443", mapsLink: "https://maps.app.goo.gl/i38N8HRtyRbxQkYW9" },
+    ];
+
+    // Konteks tambahan agar venue mikro (mis. "Home Theater Rektorat") terpetakan tepat di Google Maps.
+    // Kosongkan ("") jika tidak ingin menambah konteks.
+    const LOKASI_KONTEKS = "Universitas Negeri Surabaya";
+
+    // URL Google Maps: pakai mapsLink jika diisi; jika tidak, pencarian otomatis dari teks "lokasi"
+    function getMapsUrl(row) {
+      if (row.mapsLink && row.mapsLink.trim() !== "") return row.mapsLink.trim();
+      if (row.koordinat && row.koordinat.trim() !== "") {
+        return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(row.koordinat.trim());
+      }
+      const target = mapQuery(row);
+      return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(target);
+    }
+
+    const fmtDate = d => {
+      const [y, m, dd] = d.split("-");
+      return new Date(+y, +m - 1, +dd).toLocaleDateString("id-ID", { day: "2-digit", month: "short", year: "numeric" });
+    };
+
+    // ---------- State ----------
+    let currentPage = 1;
+    let pageSize = 10;
+
+    const searchInput = document.getElementById("searchInput");
+    const startDateInput = document.getElementById("startDate");
+    const endDateInput = document.getElementById("endDate");
+    const pageSizeSelect = document.getElementById("pageSize");
+    const tableBody = document.getElementById("tableBody");
+    const paginationControls = document.getElementById("paginationControls");
+    const paginationInfo = document.getElementById("paginationInfo");
+    const resetBtn = document.getElementById("resetBtn");
+
+    function getFilteredData() {
+      const q = searchInput.value.trim().toLowerCase();
+      const start = startDateInput.value;
+      const end = endDateInput.value;
+
+      return tableData.filter(row => {
+        const matchesQuery = !q ||
+          row.sekolah.toLowerCase().includes(q) ||
+          row.lokasi.toLowerCase().includes(q) ||
+          row.hari.toLowerCase().includes(q);
+
+        const matchesStart = !start || row.tanggal >= start;
+        const matchesEnd = !end || row.tanggal <= end;
+
+        return matchesQuery && matchesStart && matchesEnd;
+      });
+    }
+
+    // ---------- Sort: klik header untuk mengurutkan ----------
+    const dayOrder = { senin: 1, selasa: 2, rabu: 3, kamis: 4, jumat: 5, sabtu: 6, minggu: 7 };
+    let sortKey = null;
+    let sortDir = 1;
+
+    function compareRows(a, b) {
+      let r = 0;
+      if (sortKey === "hari") {
+        r = (dayOrder[a.hari.toLowerCase()] || 99) - (dayOrder[b.hari.toLowerCase()] || 99);
+      } else if (sortKey === "tanggal") {
+        r = a.tanggal < b.tanggal ? -1 : (a.tanggal > b.tanggal ? 1 : 0);
+      } else if (sortKey === "waktu") {
+        r = a.waktu < b.waktu ? -1 : (a.waktu > b.waktu ? 1 : 0);
+      } else if (sortKey === "sekolah") {
+        r = a.sekolah.localeCompare(b.sekolah, "id", { sensitivity: "base", numeric: true });
+      } else if (sortKey === "lokasi") {
+        r = a.lokasi.localeCompare(b.lokasi, "id", { sensitivity: "base", numeric: true });
+      }
+      return r * sortDir;
+    }
+
+    function applySorting(rows) {
+      if (!sortKey) return rows;
+      return rows.slice().sort(compareRows);
+    }
+
+    function renderTable() {
+      hideMapPreview();
+      const filtered = applySorting(getFilteredData());
+      const totalRows = filtered.length;
+      const totalPages = Math.max(1, Math.ceil(totalRows / pageSize));
+      if (currentPage > totalPages) currentPage = totalPages;
+
+      const startIdx = (currentPage - 1) * pageSize;
+      const pageRows = filtered.slice(startIdx, startIdx + pageSize);
+
+      tableBody.innerHTML = "";
+
+      const tdStyle = "padding:12px 16px; font-size:13px; color:#334155; border-bottom:1px solid #eef2f7; white-space:nowrap;";
+
+      if (pageRows.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:30px; color:#94a3b8; font-size:13px;">Tidak ada data yang cocok dengan pencarian/filter.</td></tr>`;
+      } else {
+        pageRows.forEach((row, i) => {
+          const tr = document.createElement("tr");
+          tr.style.background = i % 2 === 1 ? "#f5f9ff" : "#ffffff";
+
+          const tdHari = document.createElement("td");
+          tdHari.style.cssText = tdStyle;
+          tdHari.textContent = row.hari;
+
+          const tdTanggal = document.createElement("td");
+          tdTanggal.style.cssText = tdStyle;
+          tdTanggal.textContent = fmtDate(row.tanggal);
+
+          const tdWaktu = document.createElement("td");
+          tdWaktu.style.cssText = tdStyle;
+          tdWaktu.textContent = row.waktu;
+
+          const tdSekolah = document.createElement("td");
+          tdSekolah.style.cssText = tdStyle;
+          tdSekolah.textContent = row.sekolah;
+
+          const link = document.createElement("a");
+          link.href = getMapsUrl(row);
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+          link.textContent = row.lokasi;
+          link.style.color = "#1d4ed8";
+          link.style.textDecoration = "underline";
+          link.style.fontWeight = "600";
+          link.addEventListener("mouseenter", () => showMapPreview(link, row));
+          link.addEventListener("mouseleave", hideMapPreview);
+
+          const tdLokasi = document.createElement("td");
+          tdLokasi.style.cssText = tdStyle;
+          tdLokasi.appendChild(link);
+
+          tr.appendChild(tdHari);
+          tr.appendChild(tdTanggal);
+          tr.appendChild(tdWaktu);
+          tr.appendChild(tdSekolah);
+          tr.appendChild(tdLokasi);
+          tableBody.appendChild(tr);
+        });
+      }
+
+      renderPagination(totalRows, totalPages, startIdx, pageRows.length);
+    }
+
+    function renderPagination(totalRows, totalPages, startIdx, shownCount) {
+      paginationInfo.textContent = totalRows === 0
+        ? "0 data ditemukan"
+        : `Menampilkan ${startIdx + 1}-${startIdx + shownCount} dari ${totalRows} data`;
+
+      paginationControls.innerHTML = "";
+
+      const btnBaseStyle = "border:1px solid #cbd5e1; background:#ffffff; color:#1e3a8a; min-width:34px; height:34px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer;";
+      const btnActiveStyle = "border:1px solid #1e3a8a; background:#1e3a8a; color:#ffffff; min-width:34px; height:34px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer;";
+      const btnDisabledStyle = "border:1px solid #cbd5e1; background:#ffffff; color:#1e3a8a; min-width:34px; height:34px; border-radius:8px; font-size:13px; font-weight:600; opacity:0.4; cursor:not-allowed;";
+
+      const prevBtn = document.createElement("button");
+      prevBtn.textContent = "‹";
+      prevBtn.disabled = currentPage === 1;
+      prevBtn.setAttribute("style", currentPage === 1 ? btnDisabledStyle : btnBaseStyle);
+      prevBtn.addEventListener("click", () => { currentPage--; renderTable(); });
+      paginationControls.appendChild(prevBtn);
+
+      const maxButtons = 5;
+      let startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
+      let endPage = Math.min(totalPages, startPage + maxButtons - 1);
+      if (endPage - startPage < maxButtons - 1) {
+        startPage = Math.max(1, endPage - maxButtons + 1);
+      }
+
+      for (let p = startPage; p <= endPage; p++) {
+        const btn = document.createElement("button");
+        btn.textContent = p;
+        btn.setAttribute("style", p === currentPage ? btnActiveStyle : btnBaseStyle);
+        btn.addEventListener("click", () => { currentPage = p; renderTable(); });
+        paginationControls.appendChild(btn);
+      }
+
+      const nextBtn = document.createElement("button");
+      nextBtn.textContent = "›";
+      nextBtn.disabled = currentPage === totalPages;
+      nextBtn.setAttribute("style", currentPage === totalPages ? btnDisabledStyle : btnBaseStyle);
+      nextBtn.addEventListener("click", () => { currentPage++; renderTable(); });
+      paginationControls.appendChild(nextBtn);
+    }
+
+    // ---------- Reset Filter: hanya tampilkan jika ada filter aktif ----------
+    function updateResetVisibility() {
+      const hasFilter = searchInput.value.trim() !== "" ||
+        startDateInput.value !== "" ||
+        endDateInput.value !== "";
+      resetBtn.style.display = hasFilter ? "" : "none";
+    }
+
+    // ---------- Preview Google Maps saat hover pada link lokasi ----------
+    const mapPreviewEl = document.getElementById("mapPreview");
+    const mapPreviewFrame = document.getElementById("mapPreviewFrame");
+    const mapPreviewLabel = document.getElementById("mapPreviewLabel");
+    let mapPreviewTimer = null;
+    let mapPreviewQuery = "";
+
+    // Query peta bersama untuk preview & link (teks "lokasi" + konteks kampus bila diisi)
+    function mapQuery(row) {
+      const pakaiLokasi = row.lokasi && row.lokasi.trim() !== "";
+      if (!pakaiLokasi) return row.sekolah;
+      return LOKASI_KONTEKS !== "" ? row.lokasi.trim() + ", " + LOKASI_KONTEKS : row.lokasi.trim();
+    }
+
+    function buildEmbedUrl(row) {
+      if (row.koordinat && row.koordinat.trim() !== "") {
+        return "https://maps.google.com/maps?q=" + encodeURIComponent(row.koordinat.trim()) + "&z=18&output=embed";
+      }
+      const target = mapQuery(row);
+      return "https://maps.google.com/maps?q=" + encodeURIComponent(target) + "&z=14&output=embed";
+    }
+
+    function positionMapPreview(anchorRect) {
+      const w = 390, h = 320, gap = 14, margin = 8;
+      let left = anchorRect.right + gap;
+      if (left + w > window.innerWidth - margin) left = anchorRect.left - w - gap;
+      left = Math.max(margin, left);
+      let top = anchorRect.top - h / 2;
+      top = Math.max(margin, Math.min(top, window.innerHeight - h - margin));
+      mapPreviewEl.style.left = left + "px";
+      mapPreviewEl.style.top = top + "px";
+    }
+
+    function showMapPreview(linkEl, row) {
+      clearTimeout(mapPreviewTimer);
+      mapPreviewTimer = setTimeout(() => {
+        const query = buildEmbedUrl(row);
+        if (mapPreviewQuery !== query) {
+          mapPreviewFrame.src = query;
+          mapPreviewQuery = query;
+          mapPreviewLabel.textContent = "Preview lokasi: " + row.lokasi;
+        }
+        positionMapPreview(linkEl.getBoundingClientRect());
+        mapPreviewEl.style.display = "block";
+      }, 200);
+    }
+
+    function hideMapPreview() {
+      clearTimeout(mapPreviewTimer);
+      mapPreviewEl.style.display = "none";
+    }
+
+    // ---------- Responsif: susun ulang toolbar di layar kecil ----------
+    function adjustLayout() {
+      const toolbar = document.getElementById("toolbar");
+      const isNarrow = window.innerWidth <= 640;
+      toolbar.style.flexDirection = isNarrow ? "column" : "row";
+      toolbar.style.alignItems = isNarrow ? "stretch" : "flex-end";
+      searchInput.style.minWidth = isNarrow ? "0" : "220px";
+    }
+    window.addEventListener("resize", adjustLayout);
+
+    // ---------- Sort: indikator & klik header ----------
+    const sortHeaders = document.querySelectorAll("th[data-sort]");
+    const ARROW_UP = String.fromCharCode(9650);
+    const ARROW_DOWN = String.fromCharCode(9660);
+    const ARROW_NONE = String.fromCharCode(8597);
+
+    function updateSortIndicators() {
+      sortHeaders.forEach(th => {
+        const key = th.getAttribute("data-sort");
+        const ind = th.querySelector("span[data-ind]");
+        const active = sortKey === key;
+        if (ind) {
+          ind.textContent = active ? (sortDir === 1 ? ARROW_UP : ARROW_DOWN) : ARROW_NONE;
+          ind.style.opacity = active ? "1" : "0.35";
+        }
+        th.setAttribute("aria-sort", active ? (sortDir === 1 ? "ascending" : "descending") : "none");
+      });
+    }
+
+    sortHeaders.forEach(th => th.addEventListener("click", () => {
+      const key = th.getAttribute("data-sort");
+      if (sortKey === key) { sortDir = -sortDir; } else { sortKey = key; sortDir = 1; }
+      currentPage = 1;
+      updateSortIndicators();
+      renderTable();
+    }));
+
+    // ---------- Events ----------
+    searchInput.addEventListener("input", () => { currentPage = 1; renderTable(); updateResetVisibility(); });
+    startDateInput.addEventListener("change", () => { currentPage = 1; renderTable(); updateResetVisibility(); });
+    endDateInput.addEventListener("change", () => { currentPage = 1; renderTable(); updateResetVisibility(); });
+    pageSizeSelect.addEventListener("change", () => {
+      pageSize = parseInt(pageSizeSelect.value, 10);
+      currentPage = 1;
+      renderTable();
+    });
+    resetBtn.addEventListener("click", () => {
+      searchInput.value = "";
+      startDateInput.value = "";
+      endDateInput.value = "";
+      pageSizeSelect.value = "10";
+      pageSize = 10;
+      currentPage = 1;
+      renderTable();
+      updateResetVisibility();
+    });
+
+    // ---------- Init ----------
+    adjustLayout();
+    updateSortIndicators();
+    updateResetVisibility();
+    renderTable();
+  </script>
+
+</body>
+
+</html>
